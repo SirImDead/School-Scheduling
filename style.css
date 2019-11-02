@@ -1,0 +1,19 @@
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: cornsilk !important;
+}
+
+h1{
+    color: lightskyblue;
+    text-emphasis: center;
+}
+
+h3{
+    color: #ff9999;
+}
+
+#calendar-header {
+    text-align: center;
+}
+
