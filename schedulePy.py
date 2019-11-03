@@ -181,3 +181,141 @@ print()
 freetimes[str(gfree_P)] = gfree_D
 freetimes["Tiger Time"] = "E Day"
 print(freetimes)
+
+
+
+
+
+import datetime
+import time
+
+class TimedEvent:
+    def __init__(self, endtime, callback):
+        self.endtime = endtime
+        self.callback = callback
+
+    def ready(self):
+        return self.endtime == datetime.datetime.now()
+#may cause problems, == may cause delay and cause it to never run
+
+class Timer:
+    def __init__(self):
+        self.events = []
+#delay parameter is in seconds
+    def call_after(self, end_time, callback):#when you create an event
+        self.events.append(TimedEvent(end_time, callback))
+
+    def run(self):
+        while True:
+            ready_events = [e for e in self.events if e.ready()]
+            for event in ready_events:
+                event.callback(self)
+                self.events.remove(event)
+            time.sleep(0.5)
+
+def format_time(message, *args):
+    now = datetime.datetime.now()
+    print(f"{now:%I:%M:%S}: {message}")
+#formats time
+def one(timer):
+    format_time("Called One")
+#What the timed event does
+if __name__== "__main__":
+    myschedule = Timer()
+    myschedule.call_after((2019, 11, 2, 13, 48, 0, 0),one)
+#(year, month, datenum, hour24, minute, second, millisecond)
+    format_time("Starting")
+    myschedule.run()
+
+
+
+
+
+
+
+#Instead of list inside of dict schedule, make a dictionary, Ex. key = p1, value = length of p1
+def blockscheduler(p1, p2, p3, p4, p5, p6, p7, p8, gfree_D, gfree_P, Slab_D, Slab1, Slab2, Scourse):
+    schedule = {"A Day": [p1, p2, "Morning Break", p3, p4, p5, "Break", p6, p7, p8],
+                    "B Day": [p2, p3, "Morning Break", p4, p1, p6, "Break", p7, p8, p5],
+                    "C Day": [p3, p4, "Morning Break", p1, p2, p7, "Break", p8, p1, p2],
+                    "D Day": [p4, p1, "Morning Break", p2, p3, p8, "Break", p5, p6, p7],
+                   "E Day": [p3, p1, "Break", p7, p5, "Tiger Time"],
+                    "F Day": [p4, p2, "Break", p8, p6, "Activity"],
+                    "HR Day": [p1, p2, "Homeroom", p3, p4, p5, "Break", p6, p7, p8]}
+    schedule[gfree_D] = "Free Period"
+    schedule[Slab_D][Slab1] = Scourse
+    schedule[Slab_D][Slab2] = Scourse
+    return schedule
+
+def cur_class(day):
+    curtime = time.localtime(time.time())
+
+    if curtime.tm_hour == 8:
+        return schedule[day][0]
+
+        # Days
+
+    elif day == "A Day" or day == "B Day" or day == "C Day" or day == "D Day":
+
+        if curtime.tm_hour == 9:
+            if curtime.tm_min < 4:
+                return schedule[day][0]
+            elif curtime.tm_min < 52:
+                return schedule[day][1]
+            else:
+                return schedule[day][2]
+
+        elif curtime.tm_hour == 10:
+            if curtime.tm_min < 3:
+                return schedule[day][2]
+            elif curtime.tm_min < 51:
+                return schedule[day][3]
+            else:
+                return schedule[day][4]
+
+        elif curtime.tm_hour == 11:
+            if curtime.tm_min < 35:
+                return schedule[day][4]
+            else:
+                return schedule[day][5]
+
+        elif curtime.tm_hour == 12:
+            if curtime.tm_min < 23:
+                return schedule[day][5]
+            else:
+                return schedule[day][6]
+
+        elif curtime.tm_hour == 13:
+            if curtime.tm_min < 45:
+                return schedule[day][7]
+            else:
+                    return schedule[day][8]
+
+        elif curtime.tm_hour == 14:
+            if curtime.tm_min < 33:
+                return schedule[day][8]
+            else:
+                return schedule[day][9]
+
+freetimes = {}
+#input
+p1 = "Public Speaking"
+p2 = "Studio Art"
+p3 = "Geometry 1 Accelerated"
+p4 = "US History"
+p5 = "French 3a"
+p6 = "English"
+p7 = "PE"
+p8 = "Bio Accel"
+gfree_D = "C Day"
+gfree_P = 5
+Slab_D = "B Day"
+Slab1 = "5"
+Slab2 = "6"
+Scourse = "Bio Accel"
+print()
+#All free times
+
+freetimes[str(gfree_P)] = gfree_D
+freetimes["Tiger Time"] = "E Day"
+print(freetimes)
